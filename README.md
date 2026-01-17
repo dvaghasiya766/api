@@ -1,7 +1,7 @@
 ## Setup Instructions
 
 1. Create database:
-   createdb todo_db
+   createdb TodoApp
 
 2. Install dependencies:
    npm install
