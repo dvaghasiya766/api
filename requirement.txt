@@ -1,0 +1,2 @@
+# Use this only once or for initialize DB
+psql -U postgres -d todo_db < todo_app.sql

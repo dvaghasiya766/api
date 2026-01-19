@@ -13,15 +13,26 @@ const registerUser = async (req, res, next) => {
   try {
     // Logic for user registration
     const { username, email, password } = req.body;
+    // Check User is Already Exist or Not
+    const existingUserQuery = "SELECT * FROM users WHERE email = $1";
+    const existingUserResult = await pool.query(existingUserQuery, [email]);
+    if (existingUserResult.rows.length > 0) {
+      console.log("Email already in use:", email);
+      return next(new httpModel("Email already in use", 409));
+    }
+
+    // Hash Password
     const hashedPassword = await bcrypt.hash(password, 12);
+    // Create New User
     const query =
       "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING user_id";
     const result = await pool.query(query, [username, email, hashedPassword]);
     res.status(201).json({
       message: "User registered successfully",
-      userId: result.rows[0].id,
+      userId: result.rows[0].user_id,
     });
   } catch (e) {
+    console.log(e.code);
     if (e.code === "23505") {
       return next(new httpModel("Email already exists", 409));
     }
