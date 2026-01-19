@@ -1,2 +1,5 @@
-# Use this only once or for initialize DB
-psql -U postgres -d todo_db < todo_app.sql
+# Use this only once or for Export DB
+pg_dump -U postgres TodoApp > todo_app.sql
+
+# Use this only once or for Import DB
+pg_dump -U postgres todo_app < todo_app.sql
